@@ -17,13 +17,10 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dhelp",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "dhelp prints cli commands for various dev tools and allows users CRUD operations for additional tool commands",
+	Long: `dhelp is a CLI library that prints cli commands
+		   or various dev tools and allows users CRUD operations
+		   for additional tool commands.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
