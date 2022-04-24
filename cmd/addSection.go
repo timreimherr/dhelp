@@ -6,17 +6,23 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
+	"github.com/timreimherr/dhelp/internal/data"
 )
 
 // addSectionCmd represents the addSection command
 var addSectionCmd = &cobra.Command{
 	Use:   "addSection",
-	Short: "addSection creates a new tool header",
-	Long:  `addSection creates a new tool header where commands specific to that tool will be grouped`,
+	Short: "Adds a section inder which info key/value pairs can be added",
+	Long:  `Adds a section inder which info key/value pairs can be added`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("addSection called")
+		fmt.Println("Adding section: ", args[0])
+		err := data.CreateSection(args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
