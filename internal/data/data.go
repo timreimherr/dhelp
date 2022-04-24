@@ -65,6 +65,27 @@ func AddInfoToSection(sectionID uint64, key string, value string) error {
 	return err
 }
 
+func GetInfos() []*model.Info {
+	db := initObjectBox()
+	defer db.Close()
+
+	infoBox := model.BoxForInfo(db)
+
+	infos, _ := infoBox.Query(model.Info_.Section_Id.OrderAsc()).Find()
+
+	return infos
+}
+func GetInfosBySectionId(sectionId uint64) []*model.Info {
+	db := initObjectBox()
+	defer db.Close()
+
+	infoBox := model.BoxForInfo(db)
+
+	infos, _ := infoBox.Query(model.Info_.Section_Id.Equals(sectionId), model.Info_.Id.OrderAsc()).Find()
+
+	return infos
+}
+
 func GetSections() []*model.Section {
 	db := initObjectBox()
 	defer db.Close()
