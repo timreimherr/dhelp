@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/timreimherr/dhelp/internal/data"
+	"github.com/timreimherr/dhelp/internal/log"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -17,19 +18,21 @@ var rootCmd = &cobra.Command{
 	Use:   "dhelp",
 	Short: "dhelp prints cli commands for various dev tools and allows users CRUD operations for additional tool commands",
 	Long: `dhelp is a CLI library that prints cli commands
-	or various dev tools and allows users CRUD operations
-	for additional tool commands.`,
+for various dev tools and allows users CRUD operations
+for additional tool commands.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		sections := data.GetSections()
-
+		fmt.Println()
 		for _, s := range sections {
 			infos := data.GetInfosBySectionId(s.Id)
-			fmt.Printf("%d. %s\n", s.Id, s.Name)
+			msg := fmt.Sprintf("%d. %s\n", s.Id, s.Name)
+			log.Section(msg)
 			for _, i := range infos {
-				fmt.Printf("-- %s : %s\n", i.Key, i.Value)
+				log.Info(i.Key, i.Value)
 			}
+			fmt.Println()
 		}
 	},
 }

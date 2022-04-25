@@ -39,7 +39,7 @@ func CreateSection(name string) error {
 	return err
 }
 
-func AddInfoToSection(sectionID uint64, key string, value string) error {
+func AddInfoToSection(sectionID uint64, key string, value string) (sectionName string, err error) {
 	db := initObjectBox()
 	defer db.Close()
 
@@ -47,11 +47,11 @@ func AddInfoToSection(sectionID uint64, key string, value string) error {
 
 	section, err := box.Get(sectionID)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if section == nil {
-		return dErr.ErrSectionDoesNotExist
+		return "", dErr.ErrSectionDoesNotExist
 	}
 
 	infoBox := model.BoxForInfo(db)
@@ -62,7 +62,7 @@ func AddInfoToSection(sectionID uint64, key string, value string) error {
 		Value:   value,
 	})
 
-	return err
+	return section.Name, err
 }
 
 func GetInfos() []*model.Info {
@@ -96,6 +96,20 @@ func GetSections() []*model.Section {
 	box := model.BoxForSection(db)
 
 	sections, err := box.Query(model.Section_.Id.OrderAsc()).Find()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return sections
+}
+
+func GetSectionByName(name string) []*model.Section {
+	db := initObjectBox()
+	defer db.Close()
+
+	box := model.BoxForSection(db)
+
+	sections, err := box.Query(model.Section_.Name.Equals(name, false)).Find()
 	if err != nil {
 		log.Fatal(err)
 	}

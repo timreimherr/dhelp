@@ -15,8 +15,9 @@ import (
 // addSectionCmd represents the addSection command
 var addSectionCmd = &cobra.Command{
 	Use:   "addSection",
-	Short: "Adds a section inder which info key/value pairs can be added",
-	Long:  `Adds a section inder which info key/value pairs can be added`,
+	Short: "Adds a section under which info key/value pairs can be added",
+	Long: `Adds a section under which info key/value pairs can be added
+Example: dhelp addSection "Custom Section"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Adding section: ", args[0])
 		err := data.CreateSection(args[0])
