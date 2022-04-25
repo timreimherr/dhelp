@@ -81,7 +81,10 @@ func GetInfosBySectionId(sectionId uint64) []*model.Info {
 
 	infoBox := model.BoxForInfo(db)
 
-	infos, _ := infoBox.Query(model.Info_.Section_Id.Equals(sectionId), model.Info_.Id.OrderAsc()).Find()
+	infos, err := infoBox.Query(model.Info_.Section_Id.Equals(sectionId), model.Info_.Id.OrderAsc()).Find()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return infos
 }
@@ -92,7 +95,7 @@ func GetSections() []*model.Section {
 
 	box := model.BoxForSection(db)
 
-	sections, err := box.GetAll()
+	sections, err := box.Query(model.Section_.Id.OrderAsc()).Find()
 	if err != nil {
 		log.Fatal(err)
 	}

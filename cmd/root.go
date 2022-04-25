@@ -25,7 +25,11 @@ var rootCmd = &cobra.Command{
 		sections := data.GetSections()
 
 		for _, s := range sections {
-			fmt.Printf("%d. %s", s.Id, s.Name)
+			infos := data.GetInfosBySectionId(s.Id)
+			fmt.Printf("%d. %s\n", s.Id, s.Name)
+			for _, i := range infos {
+				fmt.Printf("-- %s : %s\n", i.Key, i.Value)
+			}
 		}
 	},
 }
