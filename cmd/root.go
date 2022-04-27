@@ -5,12 +5,10 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/timreimherr/jhelp/internal/data"
-	"github.com/timreimherr/jhelp/internal/log"
+	"github.com/timreimherr/jhelp/internal/service"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -23,16 +21,7 @@ for additional tool commands.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		sections := data.GetSections()
-		fmt.Println()
-		for _, s := range sections {
-			infos := data.GetInfosBySectionId(s.Id)
-			log.Section(s.Name)
-			for _, i := range infos {
-				log.Info(i.Key, i.Value)
-			}
-			fmt.Println()
-		}
+		service.PrintAll()
 	},
 }
 
