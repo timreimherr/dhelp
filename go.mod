@@ -1,4 +1,4 @@
-module github.com/timreimherr/dhelp
+module github.com/timreimherr/jhelp
 
 go 1.17
 

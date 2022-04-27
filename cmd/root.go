@@ -9,15 +9,15 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/timreimherr/dhelp/internal/data"
-	"github.com/timreimherr/dhelp/internal/log"
+	"github.com/timreimherr/jhelp/internal/data"
+	"github.com/timreimherr/jhelp/internal/log"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "dhelp",
-	Short: "dhelp prints cli commands for various dev tools and allows users CRUD operations for additional tool commands",
-	Long: `dhelp is a CLI library that prints cli commands
+	Use:   "jhelp",
+	Short: "jhelp prints cli commands for various dev tools and allows users CRUD operations for additional tool commands",
+	Long: `jhelp is a CLI library that prints cli commands
 for various dev tools and allows users CRUD operations
 for additional tool commands.`,
 	// Uncomment the following line if your bare application
@@ -27,8 +27,7 @@ for additional tool commands.`,
 		fmt.Println()
 		for _, s := range sections {
 			infos := data.GetInfosBySectionId(s.Id)
-			msg := fmt.Sprintf("%d. %s\n", s.Id, s.Name)
-			log.Section(msg)
+			log.Section(s.Name)
 			for _, i := range infos {
 				log.Info(i.Key, i.Value)
 			}
@@ -51,7 +50,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dhelp.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.jhelp.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

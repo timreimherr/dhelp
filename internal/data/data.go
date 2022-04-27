@@ -1,21 +1,32 @@
 package data
 
 import (
+	"errors"
 	"log"
+	"os"
 
 	"github.com/objectbox/objectbox-go/objectbox"
-	dErr "github.com/timreimherr/dhelp/internal/errors"
-	"github.com/timreimherr/dhelp/internal/model"
+	dErr "github.com/timreimherr/jhelp/internal/errors"
+	"github.com/timreimherr/jhelp/internal/model"
 )
 
+func init() {
+	_, err := os.Open("./storage/data.mdb")
+	if errors.Is(err, os.ErrNotExist) {
+		createDefaultRecords()
+	}
+}
+
 func initObjectBox() *objectbox.ObjectBox {
-	objectBox, err := objectbox.NewBuilder().Model(model.ObjectBoxModel()).Build()
+	objectBox, err := objectbox.NewBuilder().Directory("./storage").Model(model.ObjectBoxModel()).Build()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return objectBox
 }
+
+// Sections
 
 func CreateSection(name string) error {
 	db := initObjectBox()
@@ -38,6 +49,50 @@ func CreateSection(name string) error {
 
 	return err
 }
+
+func GetSectionByName(name string) []*model.Section {
+	db := initObjectBox()
+	defer db.Close()
+
+	box := model.BoxForSection(db)
+
+	sections, err := box.Query(model.Section_.Name.Equals(name, false)).Find()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return sections
+}
+
+func GetSectionById(id uint64) []*model.Section {
+	db := initObjectBox()
+	defer db.Close()
+
+	box := model.BoxForSection(db)
+
+	sections, err := box.Query(model.Section_.Id.Equals(id)).Find()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return sections
+}
+
+func GetSections() []*model.Section {
+	db := initObjectBox()
+	defer db.Close()
+
+	box := model.BoxForSection(db)
+
+	sections, err := box.Query(model.Section_.Id.OrderAsc()).Find()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return sections
+}
+
+// Infos
 
 func AddInfoToSection(sectionID uint64, key string, value string) (sectionName string, err error) {
 	db := initObjectBox()
@@ -65,16 +120,6 @@ func AddInfoToSection(sectionID uint64, key string, value string) (sectionName s
 	return section.Name, err
 }
 
-func GetInfos() []*model.Info {
-	db := initObjectBox()
-	defer db.Close()
-
-	infoBox := model.BoxForInfo(db)
-
-	infos, _ := infoBox.Query(model.Info_.Section_Id.OrderAsc()).Find()
-
-	return infos
-}
 func GetInfosBySectionId(sectionId uint64) []*model.Info {
 	db := initObjectBox()
 	defer db.Close()
@@ -89,30 +134,13 @@ func GetInfosBySectionId(sectionId uint64) []*model.Info {
 	return infos
 }
 
-func GetSections() []*model.Section {
+func GetInfos() []*model.Info {
 	db := initObjectBox()
 	defer db.Close()
 
-	box := model.BoxForSection(db)
+	infoBox := model.BoxForInfo(db)
 
-	sections, err := box.Query(model.Section_.Id.OrderAsc()).Find()
-	if err != nil {
-		log.Fatal(err)
-	}
+	infos, _ := infoBox.Query(model.Info_.Section_Id.OrderAsc()).Find()
 
-	return sections
-}
-
-func GetSectionByName(name string) []*model.Section {
-	db := initObjectBox()
-	defer db.Close()
-
-	box := model.BoxForSection(db)
-
-	sections, err := box.Query(model.Section_.Name.Equals(name, false)).Find()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return sections
+	return infos
 }

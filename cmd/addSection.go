@@ -9,7 +9,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"github.com/timreimherr/dhelp/internal/data"
+	"github.com/timreimherr/jhelp/internal/data"
 )
 
 // addSectionCmd represents the addSection command
@@ -17,7 +17,7 @@ var addSectionCmd = &cobra.Command{
 	Use:   "addSection",
 	Short: "Adds a section under which info key/value pairs can be added",
 	Long: `Adds a section under which info key/value pairs can be added
-Example: dhelp addSection "Custom Section"`,
+Example: jhelp addSection "Custom Section"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Adding section: ", args[0])
 		err := data.CreateSection(args[0])
