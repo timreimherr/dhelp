@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Tim Reimherr timreimherr@gmail.com
 
 */
 package cmd
@@ -21,7 +21,12 @@ for additional tool commands.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		service.PrintAll()
+		section, _ := cmd.Flags().GetString("get")
+		if section != "" {
+			service.PrintSection(section)
+		} else {
+			service.PrintAll()
+		}
 	},
 }
 
@@ -43,5 +48,5 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().StringP("get", "g", "", "Get will search for a section of it's value. It will be printed if found, otherwise all sections will be found")
 }

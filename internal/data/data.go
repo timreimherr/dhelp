@@ -56,7 +56,7 @@ func GetSectionByName(name string) []*model.Section {
 
 	box := model.BoxForSection(db)
 
-	sections, err := box.Query(model.Section_.Name.Equals(name, false)).Find()
+	sections, err := box.Query(model.Section_.Name.Contains(name, false)).Find()
 	if err != nil {
 		log.Fatal(err)
 	}

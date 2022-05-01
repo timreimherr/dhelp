@@ -25,6 +25,11 @@ func PrintAll() {
 	printSection(sections)
 }
 
+func PrintSections(name string) {
+	section := data.GetSectionByName(name)
+	printSection(section)
+}
+
 func PrintSection(name string) {
 	section := data.GetSectionByName(name)
 	printSection(section)
